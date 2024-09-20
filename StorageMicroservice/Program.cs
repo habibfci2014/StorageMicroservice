@@ -15,6 +15,11 @@ builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddScoped<IStorageService, StorageService>();
 
 //AWS S3
+// Register AWS S3 Client
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
+
+// Register S3 service
 builder.Services.AddScoped<IS3Service>(sp =>
 {
     var s3Client = sp.GetRequiredService<IAmazonS3>();

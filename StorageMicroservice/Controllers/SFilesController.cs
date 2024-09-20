@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,12 @@ namespace StorageMicroservice.Controllers
         {
             try
             {
+                //Validate File
+                string ValidateFile = _storageService.ValidateFile(file);
+                if (!string.IsNullOrEmpty(ValidateFile))
+                    return BadRequest(ValidateFile);
+
+
                 var sfile = new SFile()
                 {
                     Name = file.FileName,

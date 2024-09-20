@@ -8,5 +8,6 @@ namespace StorageMicroservice.Services
         Task<SFile> GetSFileByIdAsync(int id);
         Task<IEnumerable<SFile>> GetSFileListAsync();
         Task<SFile> UploadSFileAsync(SFile sfile);
+        string ValidateFile(IFormFile file);
     }
 }
