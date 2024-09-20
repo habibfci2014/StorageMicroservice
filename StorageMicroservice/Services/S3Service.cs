@@ -14,6 +14,7 @@ namespace StorageMicroservice.Services
             _bucketName = bucketName;
         }
 
+        // Upload file method
         public async Task<string> UploadFileAsync(Stream fileStream, string fileName)
         {
             var putRequest = new PutObjectRequest
@@ -23,11 +24,23 @@ namespace StorageMicroservice.Services
                 InputStream = fileStream,
                 ContentType = "application/octet-stream", 
                 AutoCloseStream = true,
-                CannedACL = S3CannedACL.PublicRead // Optional: set permissions
+                CannedACL = S3CannedACL.PublicRead 
             };
 
             await _s3Client.PutObjectAsync(putRequest);
             return $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
+        }
+
+        // Delete file method
+        public async Task DeleteFileAsync(string fileName)
+        {
+            var deleteRequest = new DeleteObjectRequest
+            {
+                BucketName = _bucketName,
+                Key = fileName
+            };
+
+            await _s3Client.DeleteObjectAsync(deleteRequest);
         }
     }
 }

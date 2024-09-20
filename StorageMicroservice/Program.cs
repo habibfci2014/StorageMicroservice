@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddScoped<IStorageService, StorageService>();
+
+//AWS S3
 builder.Services.AddScoped<IS3Service>(sp =>
 {
     var s3Client = sp.GetRequiredService<IAmazonS3>();
@@ -20,6 +22,7 @@ builder.Services.AddScoped<IS3Service>(sp =>
     return new S3Service(s3Client, bucketName);
 });
 
+//JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
