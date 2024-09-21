@@ -9,7 +9,7 @@ using StorageMicroservice.Services;
 
 namespace StorageMicroservice.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SFilesController : ControllerBase
