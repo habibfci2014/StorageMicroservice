@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageMicroservice", "StorageMicroservice\StorageMicroservice.csproj", "{5FA4086A-903D-4CAB-8583-AE06364E2AB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StorageMicroservice", "StorageMicroservice\StorageMicroservice.csproj", "{5FA4086A-903D-4CAB-8583-AE06364E2AB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Domain", "Storage.Domain\Storage.Domain.csproj", "{AE581384-D366-4DDA-B95D-3444710AC36D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Infrastructure", "Storage.Infrastructure\Storage.Infrastructure.csproj", "{8477F491-1189-42DE-B003-C22E7A2B1F56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Tests", "Storage.Tests\Storage.Tests.csproj", "{7F66ECF8-496F-4353-BA08-6E79FA54BDF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{5FA4086A-903D-4CAB-8583-AE06364E2AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FA4086A-903D-4CAB-8583-AE06364E2AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FA4086A-903D-4CAB-8583-AE06364E2AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE581384-D366-4DDA-B95D-3444710AC36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE581384-D366-4DDA-B95D-3444710AC36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE581384-D366-4DDA-B95D-3444710AC36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE581384-D366-4DDA-B95D-3444710AC36D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8477F491-1189-42DE-B003-C22E7A2B1F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8477F491-1189-42DE-B003-C22E7A2B1F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8477F491-1189-42DE-B003-C22E7A2B1F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8477F491-1189-42DE-B003-C22E7A2B1F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F66ECF8-496F-4353-BA08-6E79FA54BDF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F66ECF8-496F-4353-BA08-6E79FA54BDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F66ECF8-496F-4353-BA08-6E79FA54BDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F66ECF8-496F-4353-BA08-6E79FA54BDF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

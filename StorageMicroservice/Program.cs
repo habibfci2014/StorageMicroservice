@@ -1,18 +1,28 @@
 using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using StorageMicroservice.Context;
+using Storage.Domain.Interfaces;
+using Storage.Domain.Services;
+using Storage.Infrastructure.Context;
+using Storage.Infrastructure.Repositories;
+using Storage.Infrastructure.Services;
+using StorageMicroservice.Extensions;
 using StorageMicroservice.Helpers;
 using StorageMicroservice.Services;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
-builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<ISFileService, SFileService>();
+builder.Services.AddScoped<ISFileRepository, SFileRepository>();
+builder.Services.AddScoped<IFileValidationService, FileValidationService>();
 
 //AWS S3
 // Register AWS S3 Client
@@ -70,6 +80,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseErrorHandlingMiddleware();
+
 
 app.UseHttpsRedirection();
 

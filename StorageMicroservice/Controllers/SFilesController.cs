@@ -3,49 +3,49 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Storage.Domain.Entities;
+using Storage.Domain.Models;
+using Storage.Domain.Services;
+using Storage.Infrastructure.Services;
 using StorageMicroservice.Dtos;
-using StorageMicroservice.Model;
 using StorageMicroservice.Services;
 
 namespace StorageMicroservice.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SFilesController : ControllerBase
     {
-        private readonly IStorageService _storageService; 
+        private readonly ISFileService _sfileService;
         private readonly IS3Service _s3Service;
+        private readonly IFileValidationService _fileValidationService;
 
-        public SFilesController(IStorageService storageService , IS3Service s3Service)
+        public SFilesController(ISFileService sfileService, IS3Service s3Service, IFileValidationService fileValidationService)
         {
-            _storageService = storageService;
+            _sfileService = sfileService;
             _s3Service = s3Service;
+            _fileValidationService = fileValidationService;
         }
 
         // GET: api/SFiles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SFile>>> GetSFile()
+        public async Task<ActionResult<PagedData<SFile>>> GetSFile(int pageIndex , int pageSize)
         {
-            var sfileList = await _storageService.GetSFileListAsync();
-
-            if (sfileList == null)
-            {
-                return NotFound();
-            }
-            return sfileList.ToList();
+            var sfiles = await _sfileService.GetSFileList(pageIndex , pageSize);
+            return sfiles;
         }
 
         // GET: api/SFiles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SFile>> GetSFile(int id)
         {
-            var sfile = await _storageService.GetSFileByIdAsync(id);
-
+            var sfile = await _sfileService.GetSFileById(id);
             if (sfile == null)
             {
                 return NotFound();
             }
+
             return sfile;
         }
 
@@ -54,46 +54,55 @@ namespace StorageMicroservice.Controllers
         [HttpPost]
         public async Task<ActionResult<SFile>> PostSFile([FromForm] SFileData sfiledata, IFormFile file)
         {
-            try
+            //Validate File
+            string ValidateFile = _fileValidationService.ValidateFile(file);
+            if (!string.IsNullOrEmpty(ValidateFile))
+                return BadRequest(ValidateFile);
+
+
+            var sfile = new SFile()
             {
-                //Validate File
-                string ValidateFile = _storageService.ValidateFile(file);
-                if (!string.IsNullOrEmpty(ValidateFile))
-                    return BadRequest(ValidateFile);
+                Name = file.FileName,
+                Description = sfiledata.Description
+            };
 
-
-                var sfile = new SFile()
+            //save file to AWS S3
+            if (file != null)
+            {
+                using (var stream = file.OpenReadStream())
                 {
-                    Name = file.FileName,
-                    Description = sfiledata.Description
-                };
-
-                //save file to AWS S3
-                if (file != null)
-                {
-                    using (var stream = file.OpenReadStream())
-                    {
-                        sfile.FileUrl = await _s3Service.UploadFileAsync(stream, file.FileName);
-                    }
+                    sfile.FileUrl = await _s3Service.UploadFileAsync(stream, file.FileName);
                 }
-
-                sfile = await _storageService.UploadSFileAsync(sfile);
-
-                return CreatedAtAction("GetSFile", new { id = sfile.Id }, sfile);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            await _sfileService.UpdateSFile(sfile);
+
+            return CreatedAtAction("GetSFile", new { id = sfile.Id }, sfile);
+
         }
 
+        // PUT : api/SFiles/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, SFileData sfiledata)
+        {
+            var sfile = await _sfileService.GetSFileById(id);
+            if (sfile == null)
+            {
+                return NotFound();
+            }
+
+            sfile.Description = sfiledata.Description;
+
+            await _sfileService.UpdateSFile(sfile);
+            return NoContent();
+        }
 
 
         // DELETE: api/SFiles/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSFile(int id)
         {
-            var sfile = await _storageService.GetSFileByIdAsync(id);
+            var sfile = await _sfileService.GetSFileById(id);
             if (sfile == null)
             {
                 return NotFound();
@@ -102,7 +111,7 @@ namespace StorageMicroservice.Controllers
             // Delete file from S3
             await _s3Service.DeleteFileAsync(sfile.FileUrl);
 
-            await _storageService.DeleteSFile(id);
+            await _sfileService.DeleteSFile(id);
 
 
             return NoContent();

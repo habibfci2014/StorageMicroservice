@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StorageMicroservice.Model;
+using Storage.Domain.Entities;
 
-namespace StorageMicroservice.Context
+namespace Storage.Infrastructure.Context
 {
     public class StorageContext : DbContext
     {
