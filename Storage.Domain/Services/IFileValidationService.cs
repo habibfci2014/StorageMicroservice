@@ -1,4 +1,6 @@
-﻿namespace StorageMicroservice.Services
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Storage.Domain.Services
 {
     public interface IFileValidationService
     {

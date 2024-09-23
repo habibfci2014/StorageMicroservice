@@ -8,7 +8,6 @@ using Storage.Domain.Models;
 using Storage.Domain.Services;
 using Storage.Infrastructure.Services;
 using StorageMicroservice.Dtos;
-using StorageMicroservice.Services;
 
 namespace StorageMicroservice.Controllers
 {

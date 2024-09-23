@@ -5,7 +5,6 @@ using Storage.Domain.Models;
 using Storage.Domain.Services;
 using Storage.Infrastructure.Services;
 using StorageMicroservice.Controllers;
-using StorageMicroservice.Services;
 
 namespace Storage.Tests
 {

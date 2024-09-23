@@ -1,8 +1,10 @@
 ﻿using Amazon.S3.Model;
 using Amazon.S3;
 using System.Text.RegularExpressions;
+using Storage.Domain.Services;
+using Microsoft.AspNetCore.Http;
 
-namespace StorageMicroservice.Services
+namespace Storage.Infrastructure.Services
 {
     public class FileValidationService : IFileValidationService
     {

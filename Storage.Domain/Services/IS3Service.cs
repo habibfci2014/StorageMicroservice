@@ -1,4 +1,4 @@
-﻿namespace StorageMicroservice.Services
+﻿namespace Storage.Domain.Services
 {
     public interface IS3Service
     {

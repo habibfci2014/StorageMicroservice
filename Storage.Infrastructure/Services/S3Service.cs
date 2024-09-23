@@ -1,7 +1,8 @@
 ﻿using Amazon.S3.Model;
 using Amazon.S3;
+using Storage.Domain.Services;
 
-namespace StorageMicroservice.Services
+namespace Storage.Infrastructure.Services
 {
     public class S3Service : IS3Service
     {
